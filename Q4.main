@@ -1,0 +1,43 @@
+A string containing only parentheses is balanced if the following is true: 1. if it is an empty string 2. if A and B are correct, AB is correct, 3. if A is correct, (A) and {A} and [A] are also correct.
+Examples of some correctly balanced strings are: "{}()", "[{()}]", "({()})"
+Examples of some unbalanced strings are: "{}(", "({)}", "[[", "}{" etc.
+Given a string, determine if it is balanced or not.
+Input Format
+There will be multiple lines in the input file, each having a single non-empty string. You should read input till end-of-file.
+Solution:
+
+import java.util.*;
+import java.io.*;
+public class BalancedParentheses {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        while (scanner.hasNextLine()) {
+            String s = scanner.nextLine();
+            System.out.println(isBalanced(s));
+        }
+        scanner.close();
+    }
+
+    private static boolean isBalanced(String s) {
+        Stack<Character> stack = new Stack<>();
+
+        for (char ch : s.toCharArray()) {
+            if (ch == '(' || ch == '{' || ch == '[') {
+                stack.push(ch);
+            } else if (ch == ')' || ch == '}' || ch == ']') {
+                if (stack.isEmpty()) return false;
+                char top = stack.pop();
+                if (!matches(top, ch)) return false;
+            }
+        }
+
+        return stack.isEmpty();
+    }
+
+    private static boolean matches(char open, char close) {
+        return (open == '(' && close == ')') ||
+               (open == '{' && close == '}') ||
+               (open == '[' && close == ']');
+    }
+}
